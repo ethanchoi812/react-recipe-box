@@ -7,7 +7,7 @@
 
 .App-header {
   background-color: #333;
-  height: 150px;
+  height: 70px;
   padding: 20px;
   color: white; }
 
@@ -23,3 +23,6 @@
 .recipe-card {
   width: 33%;
   background: #fffccc; }
+
+.recipe-sandbox {
+  display: block; }
