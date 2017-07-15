@@ -3,15 +3,17 @@ import logo from './logo.svg';
 import 'normalize.css';
 import './App.css';
 
-function Card(props){
 
-    const recipe = props.recipe;
+class Card extends Component {    
+
+  render(){
+    const recipe = this.props.recipe;
     const title = recipe.title;
     const ingredients = recipe.ingredients;
     const description = recipe.description;
 
     return(
-    <section className="recipe-card" id="card-01" recipe={recipe} onClick={props.onClick}>
+    <section className="recipe-card" id="card-01" recipe={recipe} onClick={()=>this.props.onClick(recipe)}>
       <h2>{title}</h2>
       <div className="recipe-body">
         <h3>Ingredients</h3>
@@ -25,25 +27,51 @@ function Card(props){
       </div>
     </section>
     );
-  }
-
-class Board extends Component {
-  renderCard(i){
-    <Card recipe={i} onClick={()=>this.props.onClick(i)}/>
-  }
-
-  render(){
-
-    const recipes = this.props.recipes;
-
-
-     return(
-      <div>
-      {recipes.map(recipe=>{this.renderCard(recipe)})}
-      </div>
-    );
+     
   }
 }
+
+class Editor extends Component {
+	constructor(props){
+		super(props);
+
+		this.handleTitleChange = this.handleTitleChange.bind(this);
+	}
+
+	handleTitleChange(e){
+  		this.props.onTitleChange(e.target.value);
+  	}
+
+	render(){
+
+		const recipe = this.props.recipe;
+	    const title = recipe.title;
+	    const ingredients = recipe.ingredients;
+	    const description = recipe.description;
+
+	    const clickedTitle = this.props.clickedTitle;
+
+		return(
+			<section className="recipe-sandbox">
+	            <h2 onDoubleClick={this.handleTitleClick} >{title}</h2>
+	            <form>
+	              <input value={clickedTitle} onChange={this.handleTitleChange} />
+	            </form>
+	            <div className="sandbox-body">
+	              <h3>Ingredients</h3>
+	              <ul>
+	              {ingredients !== undefined ? 
+	              	ingredients.map( item =>
+	                <li onDoubleClick={ ()=>{alert('edit me!')} }>{item}</li>) : null
+	                }
+	              </ul>
+	              <h3>Description</h3>
+	              <p onDoubleClick={ ()=>{alert('edit me!')} }>{description}</p>
+	            </div>
+	        </section>
+          );
+		}
+	}
 
 class App extends Component {
   constructor(props){
@@ -65,50 +93,43 @@ class App extends Component {
         ingredients:['chicken','beef','carrot'],
         description:'moron isum'
       }],
+
+      clickedRecipe: [{
+      	title:'',
+      	ingredients:[],
+      	description:''
+  	  }],
+
+  	  clickedTitle:''
     }
 
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
-    this.handleSandboxChange = this.handleSandboxChange.bind(this);
+    this.handleTitleClick = this.handleTitleClick.bind(this);
   }
 
 
   handleOpenEdit(i){
     this.setState({clickedRecipe:i});
-    console.log(this.state.clickedRecipe);
   }
 
-  handleSandboxChange(recipe){
-    this.setState({
-      showSandbox:!this.state.showSandbox,
-    });
+  handleTitleClick(clickedTitle){
+  	let oTitle = this.state.clickedRecipe.title;
+  	console.log(oTitle);
+  	this.setState({clickedTitle:oTitle});
   }
 
   render() {
     const recipes = this.state.recipes;
-    const showSandbox = this.state.showSandbox;
+    const clickedRecipe = this.state.clickedRecipe;
 
     return (
       <div className="App">
         <div className="App-header">
           <h2>React Recipe Box</h2>
         </div>
-        {recipes.map(recipe=> <Card i={recipe}/> )}
+        {recipes.map(recipe=> <Card recipe={recipe} onClick={this.handleOpenEdit} /> )}
 
-          <section className="recipe-sandbox" recipe={this.props.recipe}>
-            <h2 onDoubleClick={ ()=>{alert('edit me!')}} >Recipe title</h2>
-            <form onBlur={console.log('on blur')}>
-              <input value={"recipe title"} />
-            </form>
-            <div className="sandbox-body">
-              <h3>Ingredients</h3>
-              <ul>
-                <li onDoubleClick={ ()=>{alert('edit me!')} }>item 1</li>
-                <li onDoubleClick={ ()=>{alert('edit me!')} }>item 2</li>
-              </ul>
-              <h3>Description</h3>
-              <p onDoubleClick={ ()=>{alert('edit me!')} }>Some description</p>
-            </div>
-          </section>
+          <Editor recipe={clickedRecipe} onTitleChange={this.handleTitleChange} />
       </div>
     );
   }
