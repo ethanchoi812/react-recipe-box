@@ -13,7 +13,7 @@ class Card extends Component {
     const description = recipe.description;
 
     return(
-    <section className="recipe-card" id="card-01" recipe={recipe} onClick={()=>this.props.onClick(recipe)}>
+    <section className="recipe-card" onDoubleClick={()=>this.props.onDoubleClick(recipe)}>
       <h2>{title}</h2>
       <div className="recipe-body">
         <h3>Ingredients</h3>
@@ -34,40 +34,50 @@ class Card extends Component {
 class Editor extends Component {
 	constructor(props){
 		super(props);
+    this.state = {changedTitle:''};
 
 		this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleTitleChange(e){
-  		this.props.onTitleChange(e.target.value);
-  	}
+
+    this.setState({changedTitle: e.target.value});
+  }
+
+  handleSubmit(e){
+    const changedTitle = this.state.changedTitle;
+    this.props.onHandleSubmit(changedTitle);
+    return false;
+  }
 
 	render(){
 
-		const recipe = this.props.recipe;
+		  const recipe = this.props.recipe;
 	    const title = recipe.title;
 	    const ingredients = recipe.ingredients;
 	    const description = recipe.description;
 
-	    const clickedTitle = this.props.clickedTitle;
+	    //const changedTitle = this.state.changedTitle;
 
 		return(
-			<section className="recipe-sandbox">
+			     <section className="recipe-sandbox">
 	            <h2 onDoubleClick={this.handleTitleClick} >{title}</h2>
 	            <form>
-	              <input value={clickedTitle} onChange={this.handleTitleChange} />
-	            </form>
-	            <div className="sandbox-body">
-	              <h3>Ingredients</h3>
-	              <ul>
-	              {ingredients !== undefined ? 
-	              	ingredients.map( item =>
-	                <li onDoubleClick={ ()=>{alert('edit me!')} }>{item}</li>) : null
-	                }
-	              </ul>
-	              <h3>Description</h3>
-	              <p onDoubleClick={ ()=>{alert('edit me!')} }>{description}</p>
-	            </div>
+	              <input type="text" onChange={this.handleTitleChange} />
+                <input type="submit" onSubmit={this.handleSubmit} />
+              </form>
+  	            <div className="sandbox-body">
+  	              <h3>Ingredients</h3>
+  	              <ul>
+  	              {ingredients !== undefined ? 
+  	              	ingredients.map( item =>
+  	                <li onDoubleClick={ ()=>{alert('edit me!')} }>{item}</li>) : null
+  	                }
+  	              </ul>
+  	              <h3>Description</h3>
+  	              <p onDoubleClick={ ()=>{alert('edit me!')} }>{description}</p>
+  	            </div>             
 	        </section>
           );
 		}
@@ -78,33 +88,35 @@ class App extends Component {
     super(props);
     this.state = {
       recipes:[
-      {
+      { 
+        id: 0,
         title:'some recipe',
         ingredients:['apple','orange','egg'],
         description:'none'
       },
       {
+        id: 1,
         title:'recipe two',
         ingredients:['flour','pear','water'],
         description:'lorem lipsum'
       },
       {
+        id: 2,
         title:'third recipe',
         ingredients:['chicken','beef','carrot'],
         description:'moron isum'
       }],
 
       clickedRecipe: [{
+        id:'',
       	title:'',
       	ingredients:[],
       	description:''
-  	  }],
-
-  	  clickedTitle:''
+  	  }]
     }
 
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
-    this.handleTitleClick = this.handleTitleClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
 
@@ -112,10 +124,17 @@ class App extends Component {
     this.setState({clickedRecipe:i});
   }
 
-  handleTitleClick(clickedTitle){
-  	let oTitle = this.state.clickedRecipe.title;
-  	console.log(oTitle);
-  	this.setState({clickedTitle:oTitle});
+  handleSubmit(changedTitle){
+    
+    const theRecipes = this.state.recipes;
+    const newRecipe = this.state.clickedRecipe;
+    const n = newRecipe.id;
+
+    newRecipe.title = changedTitle;
+
+    theRecipes.splice(n, 1, newRecipe);
+    this.setState({ recipes: theRecipes });
+
   }
 
   render() {
@@ -127,9 +146,9 @@ class App extends Component {
         <div className="App-header">
           <h2>React Recipe Box</h2>
         </div>
-        {recipes.map(recipe=> <Card recipe={recipe} onClick={this.handleOpenEdit} /> )}
+        {recipes.map(recipe=> <Card recipe={recipe} onDoubleClick={this.handleOpenEdit} /> )}
 
-          <Editor recipe={clickedRecipe} onTitleChange={this.handleTitleChange} />
+          <Editor recipe={clickedRecipe} onHandleSubmit={this.handleSubmit}/>
       </div>
     );
   }
