@@ -34,26 +34,32 @@ class Card extends Component {
 class Editor extends Component {
 	constructor(props){
 		super(props);
-    this.state = {changedTitle:''};
+    	this.state = {
+    		changedTitle:''
+    	};
 
 		this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    	this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	handleTitleChange(e){
+  handleTitleChange(e){
 
     this.setState({changedTitle: e.target.value});
   }
 
   handleSubmit(e){
-    const changedTitle = this.state.changedTitle;
+  	e.preventDefault();
+  	
+  	const changedTitle = this.state.changedTitle;
     this.props.onHandleSubmit(changedTitle);
-    return false;
+    this.state = {
+    	changedTitle:''
+    };
   }
 
 	render(){
 
-		  const recipe = this.props.recipe;
+		const recipe = this.props.recipe;
 	    const title = recipe.title;
 	    const ingredients = recipe.ingredients;
 	    const description = recipe.description;
@@ -61,12 +67,12 @@ class Editor extends Component {
 	    //const changedTitle = this.state.changedTitle;
 
 		return(
-			     <section className="recipe-sandbox">
+			   <section className="recipe-sandbox">
 	            <h2 onDoubleClick={this.handleTitleClick} >{title}</h2>
-	            <form>
-	              <input type="text" onChange={this.handleTitleChange} />
-                <input type="submit" onSubmit={this.handleSubmit} />
-              </form>
+	            <form onSubmit={this.handleSubmit}>
+	              <input value={this.state.changedTitle} type="text" onChange={this.handleTitleChange} />
+                  <input type="submit" value="Submit"/>
+                </form>
   	            <div className="sandbox-body">
   	              <h3>Ingredients</h3>
   	              <ul>
@@ -110,6 +116,7 @@ class App extends Component {
       clickedRecipe: [{
         id:'',
       	title:'',
+      	value:'',
       	ingredients:[],
       	description:''
   	  }]
