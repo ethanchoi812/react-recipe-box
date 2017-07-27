@@ -52,17 +52,15 @@ class Editor extends Component {
   	
   	const changedTitle = this.state.changedTitle;
     this.props.onHandleSubmit(changedTitle);
-    this.state = {
-    	changedTitle:''
-    };
+    this.setState({changedTitle:''});
   }
 
 	render(){
 
 		const recipe = this.props.recipe;
-	   const title = recipe.title;
-	   const ingredients = recipe.ingredients;
-	   const description = recipe.description;
+		const title = recipe.title;
+		const ingredients = recipe.ingredients;
+		const description = recipe.description;
 
 	    //const changedTitle = this.state.changedTitle;
 
@@ -125,7 +123,18 @@ class AddRecipe extends Component {
     const description = this.state. descriptionVal;
     const addedRecipe = {title, ingredients, description};
 
-    this.props.onHandleAddRecipe(addedRecipe); 
+    if(title === '' && ingredients.length === 0 && description === ''){
+    	return false;
+    } else {
+     this.props.onHandleAddRecipe(addedRecipe); 
+    }
+
+    this.setState({
+    	newRecipe: [],
+        titleVal:'',
+        ingredientsVal:'',
+        descriptionVal:''
+    });
   }
 
   render(){
@@ -149,35 +158,11 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      recipes:[
-      { 
-        id: 0,
-        title:'some recipe',
-        ingredients:['apple','orange','egg'],
-        description:'none'
-      },
-      {
-        id: 1,
-        title:'recipe two',
-        ingredients:['flour','pear','water'],
-        description:'lorem lipsum'
-      },
-      {
-        id: 2,
-        title:'third recipe',
-        ingredients:['chicken','beef','carrot'],
-        description:'moron isum'
-      }],
-
-      clickedRecipe: [{
-        id:'',
-      	title:'',
-      	value:'',
-      	ingredients:[],
-      	description:''
-  	  }],
-
-      count: 0
+      recipes: [],
+      recipe_count: 0,
+      clickedRecipe: [],
+      show_addnew: false,
+      show_editor: false,
     }
 
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
@@ -186,14 +171,49 @@ class App extends Component {
     this.handleAddNewRecipe = this.handleAddNewRecipe.bind(this);
   }
 
+  componentDidMount(){
+  	const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
+  	const storedCount = Number(localStorage.getItem("recipe_count")) || 0;
+  	
+  	this.setState({
+  		recipes: storedRecipes,
+  		recipe_count: storedCount
+  	});
+  }
 
-  handleOpenEdit(i){
-    this.setState({clickedRecipe:i});
+  handleOpenAdd(e){
+  	e.preventDefault();
+    this.setState({show_addnew:true});
+  }
+
+  handleAddNewRecipe(addedRecipe){
+    const theRecipes = this.state.recipes.slice();
+    let count = this.state.recipe_count + 1;
+
+    addedRecipe.id = count;
+    theRecipes.push(addedRecipe);
+    this.setState({ 
+    	recipes: theRecipes,
+    	recipe_count: count
+    });
+    
+    localStorage.setItem("recipes", JSON.stringify(theRecipes));
+    localStorage.setItem("recipes_count", JSON.stringify(count));
+
+    this.setState({show_addnew: false});
+  }
+
+
+  handleOpenEdit(recipe){
+    this.setState({
+    	show_editor:true,
+    	clickedRecipe:recipe
+    });
   }
 
   handleSubmit(changedTitle){
     
-    const theRecipes = this.state.recipes;
+    const theRecipes = this.state.recipes.slice();
     const newRecipe = this.state.clickedRecipe;
     const n = newRecipe.id;
     const idx = theRecipes.findIndex(recipe => recipe.id === n);
@@ -202,24 +222,14 @@ class App extends Component {
 
     theRecipes.splice(idx, 1, newRecipe);
     this.setState({ recipes: theRecipes });
-  }
-
-  handleOpenAdd(e){
-    alert("it is opened!");
-  }
-
-  handleAddNewRecipe(addedRecipe){
-    const theRecipes = this.state.recipes;
-    const count = this.state.count;
-
-    addedRecipe.id = count + 1;
-    theRecipes.push(addedRecipe);
-    this.setState({ recipes: theRecipes });
+    localStorage.setItem("recipes", JSON.stringify(theRecipes));
   }
 
   render() {
     const recipes = this.state.recipes;
     const clickedRecipe = this.state.clickedRecipe;
+    const show_addnew = this.state.show_addnew;
+    const show_editor = this.state.show_editor;
 
     return (
       <div className="App">
@@ -227,9 +237,13 @@ class App extends Component {
           <h2>React Recipe Box</h2>
           <button className="add-btn" onClick={this.handleOpenAdd}>Add Recipe</button>
         </div>
-        {recipes.map(recipe=> <Card recipe={recipe} onDoubleClick={this.handleOpenEdit} /> )}
-          <Editor recipe={clickedRecipe} onHandleSubmit={this.handleSubmit}/>
-          <AddRecipe onHandleAddRecipe={this.handleAddNewRecipe}/>
+        {recipes.length > 0 
+        	? recipes.map(recipe=> <Card recipe={recipe} onDoubleClick={this.handleOpenEdit} /> )
+        	: null}
+        {show_editor ?
+          <Editor recipe={clickedRecipe} onHandleSubmit={this.handleSubmit}/> : null}
+          {show_addnew ?
+          <AddRecipe onHandleAddRecipe={this.handleAddNewRecipe}/> : null}
       </div>
     );
   }
