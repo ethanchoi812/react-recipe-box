@@ -1,3 +1,4 @@
+@import 'lib/fontawesome/font-awesome';
 
 .App {
   text-align: center;
@@ -27,6 +28,10 @@
 .recipe-card {
   width: 33%;
   background: #fffccc;
+}
+
+i {
+  color: #ccc;
 }
 
 .recipe-sandbox{
