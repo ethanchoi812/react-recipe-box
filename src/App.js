@@ -38,37 +38,51 @@ class Editor extends Component {
     	this.state = {
     		changedTitle:'',
         show_title_input:false,
+        
+        changedIng: [],
+        show_ing_input:false,
+        
+        changedDes:'',
+        show_des_input:false,
     	};
 
-		this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+    
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleTitleClick = this.handleTitleClick.bind(this);
 	}
 
-  handleTitleClick(e){
+  handleClick(e){
+    const show_input = "show_" + e.target.getAttribute("data-name") + "_input";
+    console.log(show_input);
     this.setState({
-      show_title_input:true
+      [show_input]: true
     });
   }
 
-  handleTitleChange(e){
-    this.setState({changedTitle: e.target.value});
+  handleInputChange(e){
+    const name = e.target.name;
+
+    this.setState({
+      [name]: e.target.value});
   }
 
   handleSubmit(e){
   	e.preventDefault();
   	
-  	const changedTitle = this.state.changedTitle;
+  	const [changedTitle, changedIng, changedDes] = 
+      [this.state.changedTitle, this.state.changedIng, this.state.changedDes];
 
-    if(changedTitle === ''){
-      return false;
-    
-    } else {
-      console.log(changedTitle);
-      this.props.onHandleSubmit(changedTitle);
-      this.setState({changedTitle:''});
-      this.setState({show_title_input:false});
-    }
+      if(changedTitle === '' && changedIng === '' && changedDes === ''){
+        return false;
+      
+      } 
+
+        const changedProps = [changedTitle, changedIng, changedDes];
+
+        this.props.onHandleSubmit();
+        this.setState({changedTitle:''});
+        this.setState({show_title_input:false});
   }
 
 	render(){
@@ -78,29 +92,36 @@ class Editor extends Component {
 		const ingredients = recipe.ingredients;
 		const description = recipe.description;
     const showTitleInput = this.state.show_title_input;
-
-	    //const changedTitle = this.state.changedTitle;
+    const showIngInput = this.state.show_ing_input;
+    const showDesInput = this.state.show_des_input;
 
 		return(
 			   <section className="recipe-sandbox">
-	            <h2 onDoubleClick={this.handleTitleClick}>{originalTitle}</h2>
-	            <form onSubmit={this.handleSubmit}>
+	         <h2 data-name="title" onDoubleClick={this.handleClick}>{originalTitle}</h2>
+	         <form onSubmit={this.handleSubmit}>
               {showTitleInput ? 
-	              <input value={this.state.changedTitle} type="text" onChange={this.handleTitleChange} />
+	              <input name="changedTitle" value={this.state.changedTitle} type="text" onChange={this.handleInputChange} />
                 : null}
-                <input type="submit" value="Submit"/>
-                </form>
+                
   	            <div className="sandbox-body">
   	              <h3>Ingredients</h3>
   	              <ul>
   	              {ingredients !== undefined ? 
   	              	ingredients.map( item =>
-  	                <li onDoubleClick={ ()=>{alert('edit me!')} }>{item}</li>) : null
+  	                <li data-name="ing" onDoubleClick={this.handleClick}>{item}</li>) : null
   	                }
   	              </ul>
+                  {showIngInput ?
+                    <input name="changedIng" value={this.state.changedIng} type="text" onChange={this.handleInputChange} />
+                    : null}
   	              <h3>Description</h3>
-  	              <p onDoubleClick={ ()=>{alert('edit me!')} }>{description}</p>
-  	            </div>             
+  	              <p data-name="des" onDoubleClick={this.handleClick}>{description}</p>
+                  {showDesInput ?
+                    <input name="changedDes" value={this.state.changedDes} type="text" onChange={this.handleInputChange} />
+                    : null}
+  	            </div> 
+              <input type="submit" value="Submit"/>
+            </form>            
 	        </section>
           );
 		}
