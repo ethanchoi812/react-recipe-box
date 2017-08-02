@@ -39,7 +39,7 @@ class Editor extends Component {
     		changedTitle:'',
         show_title_input:false,
         
-        changedIng: [],
+        changedIng: '',
         show_ing_input:false,
         
         changedDes:'',
@@ -54,7 +54,6 @@ class Editor extends Component {
 
   handleClick(e){
     const show_input = "show_" + e.target.getAttribute("data-name") + "_input";
-    console.log(show_input);
     this.setState({
       [show_input]: true
     });
@@ -70,19 +69,20 @@ class Editor extends Component {
   handleSubmit(e){
   	e.preventDefault();
   	
-  	const [changedTitle, changedIng, changedDes] = 
-      [this.state.changedTitle, this.state.changedIng, this.state.changedDes];
+  	const title = this.state.changedTitle;
+    const ingredients = this.state.changedIng.split(',');
+    const description = this.state.changedDes;
+    const changedRecipe = {title: title, ingredients: ingredients, description: description};
 
-      if(changedTitle === '' && changedIng === '' && changedDes === ''){
-        return false;
-      
-      } 
+    if(title === '' && ingredients[0] === '' && description === ''){
+      return false;
 
-        const changedProps = [changedTitle, changedIng, changedDes];
+    } else {
+    
+     this.props.onHandleEdit(changedRecipe); 
+    }
 
-        this.props.onHandleSubmit();
-        this.setState({changedTitle:''});
-        this.setState({show_title_input:false});
+    this.setState({changedTitle:'', changedIng:'', changedDes:''});
   }
 
 	render(){
@@ -91,6 +91,7 @@ class Editor extends Component {
 		const originalTitle = recipe.title;
 		const ingredients = recipe.ingredients;
 		const description = recipe.description;
+
     const showTitleInput = this.state.show_title_input;
     const showIngInput = this.state.show_ing_input;
     const showDesInput = this.state.show_des_input;
@@ -161,10 +162,11 @@ class AddRecipe extends Component {
     const title = this.state.titleVal;
     const ingredients = this.state.ingredientsVal.split(',');
     const description = this.state. descriptionVal;
-    const addedRecipe = {title, ingredients, description};
+    const addedRecipe = {title: title, ingredients: ingredients, description: description};
 
-    if(title === '' && ingredients.length === 0 && description === ''){
+    if(title === '' && ingredients[0] === '' && description === ''){
     	return false;
+
     } else {
      this.props.onHandleAddRecipe(addedRecipe); 
     }
@@ -206,7 +208,7 @@ class App extends Component {
     }
 
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmitEdit = this.handleSubmitEdit.bind(this);
     this.handleOpenAdd = this.handleOpenAdd.bind(this);
     this.handleAddNewRecipe = this.handleAddNewRecipe.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
@@ -265,14 +267,25 @@ class App extends Component {
     });
   }
 
-  handleSubmit(changedTitle){
-    
+  handleSubmitEdit(changedRecipe){
     const theRecipes = this.state.recipes.slice();
-    const newRecipe = this.state.clickedRecipe;
-    const n = newRecipe.id;
+    const clickedRecipe = this.state.clickedRecipe;
+    const n = clickedRecipe.id;
     const idx = theRecipes.findIndex(recipe => recipe.id === n);
 
-    newRecipe.title = changedTitle;
+    const newRecipe = clickedRecipe;
+
+    if(changedRecipe.title !== ''){
+      newRecipe.title = changedRecipe.title;
+    }
+
+    if(changedRecipe.ingredients[0] !== ''){
+      newRecipe.ingredients = changedRecipe.ingredients;
+    }
+
+    if(changedRecipe.description !== ''){
+      newRecipe.description = changedRecipe.description;
+    }
 
     theRecipes.splice(idx, 1, newRecipe);
     this.setState({ recipes: theRecipes });
@@ -296,7 +309,7 @@ class App extends Component {
             <Card recipe={recipe} onDoubleClick={this.handleOpenEdit} onClickRemove={this.handleRemove}/> )
         	: null}
         {show_editor ?
-          <Editor recipe={clickedRecipe} onHandleSubmit={this.handleSubmit}/> : null}
+          <Editor recipe={clickedRecipe} onHandleEdit={this.handleSubmitEdit}/> : null}
           {show_addnew ?
           <AddRecipe onHandleAddRecipe={this.handleAddNewRecipe}/> : null}
       </div>
