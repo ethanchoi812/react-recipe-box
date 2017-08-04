@@ -300,18 +300,25 @@ class App extends Component {
 
     return (
       <div className="App">
+      <div className="overlay">
         <div className="App-header">
           <h2>React Recipe Box</h2>
-          <button className="add-btn" onClick={this.handleOpenAdd}>Add Recipe</button>
         </div>
-        {recipes.length > 0 
+        <section className="App-body">
+        	<button className="add-btn" onClick={this.handleOpenAdd}>
+        		<i className="fa fa-plus"></i>
+        		&nbsp;Add a recipe
+        	</button>
+          {show_addnew ?
+          	<AddRecipe onHandleAddRecipe={this.handleAddNewRecipe}/> : null}
+          {recipes.length > 0 
         	? recipes.map(recipe =>
             <Card recipe={recipe} onDoubleClick={this.handleOpenEdit} onClickRemove={this.handleRemove}/> )
         	: null}
         {show_editor ?
           <Editor recipe={clickedRecipe} onHandleEdit={this.handleSubmitEdit}/> : null}
-          {show_addnew ?
-          <AddRecipe onHandleAddRecipe={this.handleAddNewRecipe}/> : null}
+          </section>
+        </div>
       </div>
     );
   }

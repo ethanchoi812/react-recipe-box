@@ -1,7 +1,18 @@
-@import 'lib/fontawesome/font-awesome';
+@import 'scss/vars';
 
 .App {
   text-align: center;
+  background: url('img/background-img01.jpg') no-repeat center center fixed;
+   -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
 }
 
 .App-logo {
@@ -10,28 +21,48 @@
 }
 
 .App-header {
-  background-color: #333;
+  background: none;
   height: 70px;
   padding: 20px;
-  color: white;
+
+  h2 {
+    font: $header-font;
+    color: $white;
+  }
 }
 
-.App-intro {
-  font-size: large;
+.App-body {
+  margin-top: 50px;
+  padding: 0 25px;
+  font: $body-font;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.add-btn {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 25px;
+    border: none;
+    padding: 12px 15px; 
+    cursor: pointer;
+
+    &:hover{
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateY(-5px);
+    }
+
+  i {
+    color: #333;
+  }
 }
 
 .recipe-card {
   width: 33%;
   background: #fffccc;
-}
+  @include box-shadow(1px, 1px, 15px, 2px, #777);
 
-i {
-  color: #ccc;
+  i {
+    color: #ccc;
+    cursor: pointer;
+  }
 }
 
 .recipe-sandbox{

@@ -5,6 +5,7 @@
  */
 /* FONT PATH
  * -------------------------- */
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Poppins");
 @font-face {
   font-family: 'FontAwesome';
   src: url("lib/fonts/fontawesome-webfont.eot?v=4.7.0");
@@ -2329,33 +2330,56 @@
   clip: auto; }
 
 .App {
-  text-align: center; }
+  text-align: center;
+  background: url("img/background-img01.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; }
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%; }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px; }
 
 .App-header {
-  background-color: #333;
+  background: none;
   height: 70px;
-  padding: 20px;
-  color: white; }
+  padding: 20px; }
+  .App-header h2 {
+    font: 36px "Pacifico", cursive;
+    color: #fff; }
 
-.App-intro {
-  font-size: large; }
+.App-body {
+  margin-top: 50px;
+  padding: 0 25px;
+  font: 18px "Poppins", sans-serif; }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg); }
-  to {
-    transform: rotate(360deg); } }
+.add-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 25px;
+  border: none;
+  padding: 12px 15px;
+  cursor: pointer; }
+  .add-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-5px); }
+  .add-btn i {
+    color: #333; }
 
 .recipe-card {
   width: 33%;
-  background: #fffccc; }
-
-i {
-  color: #ccc; }
+  background: #fffccc;
+  -webkit-box-shadow: 1px 1px 15px 2px #777;
+  -moz-box-shadow: 1px 1px 15px 2px #777;
+  box-shadow: 1px 1px 15px 2px #777; }
+  .recipe-card i {
+    color: #ccc;
+    cursor: pointer; }
 
 .recipe-sandbox {
   display: block; }

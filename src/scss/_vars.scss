@@ -1,0 +1,16 @@
+@import '../lib/fontawesome/font-awesome';
+@import url('https://fonts.googleapis.com/css?family=Pacifico|Poppins');
+
+//font
+$header-font: 36px 'Pacifico', cursive;
+$body-font: 18px 'Poppins', sans-serif;
+
+//colour
+$white: #fff;
+
+
+@mixin box-shadow($hor, $vert, $blur, $spread, $colour) {
+  -webkit-box-shadow: $hor $vert $blur $spread $colour;
+  	 -moz-box-shadow: $hor $vert $blur $spread $colour;
+  		  box-shadow: $hor $vert $blur $spread $colour;
+}
