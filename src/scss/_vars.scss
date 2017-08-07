@@ -7,7 +7,11 @@ $body-font: 18px 'Poppins', sans-serif;
 
 //colour
 $white: #fff;
-
+$off-white: #eaeaea;
+$light-gray: #ccc;
+$dark-gray: #636466;
+$dark-blue: #395870;
+$reddish: #ff7a7a;
 
 @mixin box-shadow($hor, $vert, $blur, $spread, $colour) {
   -webkit-box-shadow: $hor $vert $blur $spread $colour;
