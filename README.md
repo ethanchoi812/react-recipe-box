@@ -1,4 +1,4 @@
-#React Recipe Box
+# React Recipe Box
 
 freeCodeCamp Challenge: Build a Recipe Box
 

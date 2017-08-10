@@ -56,12 +56,14 @@
 }
 
 .recipe-card {
-  width: 33%;
-  background: #fffccc;
+  width: 25%;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  background: $yellow;
   @include box-shadow(1px, 1px, 15px, 2px, #777);
 
   i {
-    color: #ccc;
+    color: $light-gray;
     cursor: pointer;
   }
 }
@@ -69,7 +71,7 @@
 .recipe-sandbox{
   display: block;
   position: fixed;
-  background: $off-white;
+  background: $white;
   padding: 20px 30px;
   width: 33%;
   top: 50%;

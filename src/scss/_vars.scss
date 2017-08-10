@@ -11,7 +11,10 @@ $off-white: #eaeaea;
 $light-gray: #ccc;
 $dark-gray: #636466;
 $dark-blue: #395870;
+$light-blue: #d1d9ff;
 $reddish: #ff7a7a;
+$yellow: #fffccc;
+$light-pink: #ffebee;
 
 @mixin box-shadow($hor, $vert, $blur, $spread, $colour) {
   -webkit-box-shadow: $hor $vert $blur $spread $colour;

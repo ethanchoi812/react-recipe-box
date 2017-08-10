@@ -5,61 +5,39 @@ import './App.css';
 
 
 class Card extends Component {    
-
   render(){
     const recipe = this.props.recipe;
     const title = recipe.title;
-    const ingredients = recipe.ingredients;
-    const description = recipe.description;
-
+    
     return(
     <section className="recipe-card" onDoubleClick={()=>this.props.onDoubleClick(recipe)}>
       <h2>{title}</h2>
-      <div className="recipe-body">
-        <h3>Ingredients</h3>
-        <ul>
-        {ingredients.map(item =>
-          <li>{item}</li>
-          )}
-        </ul>
-        <h3>Description</h3>
-        <p>{description}</p>
-      </div>
     </section>
     );
      
   }
 }
 
-class Editor extends Component {
+class Viewer extends Component {
 	constructor(props){
 		super(props);
     	this.state = {
-    		changedTitle:'',
-        show_title_input:false,
-        
-        changedIng: '',
-        show_ing_input:false,
-        
-        changedDes:'',
-        show_des_input:false,
+    	
+	    	changedTitle:'',
+	        show_title_input:false,
+	        
+	        changedIng: '',
+	        show_ing_input:false,
+	        
+	        changedNotes:'',
+	        show_notes_input:false,
     	};
 
-    this.handleClick = this.handleClick.bind(this);
-    this.handleClickTitle = this.handleClickTitle.bind(this);
+	    this.handleClick = this.handleClick.bind(this);
 		this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleHide = this.handleHide.bind(this);
+	    this.handleSubmit = this.handleSubmit.bind(this);
+	    this.handleHide = this.handleHide.bind(this);
 	}
-
-  handleClickTitle(title){
-    const inputTitle = title;
-
-    this.setState({
-      show_title_input: true,
-      changedTitle: inputTitle
-    })
-  }
 
   handleClick(e){
     const show_input = "show_" + e.target.getAttribute("data-name") + "_input";
@@ -69,7 +47,7 @@ class Editor extends Component {
     });
   }
 
-  handleInputChange(e){
+  handleInputChange(e, el){
     const name = e.target.name;
 
     this.setState({
@@ -81,10 +59,10 @@ class Editor extends Component {
   	
   	const title = this.state.changedTitle;
     const ingredients = this.state.changedIng.split(',');
-    const description = this.state.changedDes;
-    const changedRecipe = {title: title, ingredients: ingredients, description: description};
+    const notes = this.state.changedNotes;
+    const changedRecipe = {title: title, ingredients: ingredients, notes: notes};
 
-    if(title === '' && ingredients[0] === '' && description === ''){
+    if(title === '' && ingredients[0] === '' && notes === ''){
       return false;
 
     } else {
@@ -92,7 +70,7 @@ class Editor extends Component {
      this.props.onHandleEdit(changedRecipe); 
     }
 
-    this.setState({changedTitle:'', changedIng:'', changedDes:''});
+    this.setState({changedTitle:'', changedIng:'', changedNotes:''});
   }
 
   handleHide(e){
@@ -100,48 +78,49 @@ class Editor extends Component {
     this.props.onHandleHideWindow(hide_editor);
   }
 
-	render(){
+  render(){
 
-		const recipe = this.props.recipe;
-		const title = recipe.title;
-		const ingredients = recipe.ingredients;
-		const description = recipe.description;
+	const recipe = this.props.recipe;
+	const title = recipe.title;
+	const ingredients = recipe.ingredients;
+	const notes = recipe.notes;
 
     const showTitleInput = this.state.show_title_input;
     const showIngInput = this.state.show_ing_input;
-    const showDesInput = this.state.show_des_input;
+    const showNotesInput = this.state.show_notes_input;
 
 		return(
-			   <section className="recipe-sandbox">
-          <i onClick={this.handleHide} className="fa fa-close"></i>
-	         <h2 data-name="title" onDoubleClick={this.handleClickTitle(title)}>{title}</h2>
-	         <form onSubmit={this.handleSubmit}>
-              {showTitleInput ? 
-	              <input name="changedTitle" value={this.state.changedTitle} type="text" onChange={this.handleInputChange} />
-                : null}
-                
-  	            <div className="sandbox-body">
-  	              <h3>Ingredients</h3>
-  	              <ul>
-  	              {ingredients !== undefined ? 
-  	              	ingredients.map( item =>
-  	                <li data-name="ing" onDoubleClick={this.handleClick}>{item}</li>) : null
-  	                }
-  	              </ul>
-                  {showIngInput ?
-                    <input name="changedIng" value={this.state.changedIng} type="text" onChange={this.handleInputChange} />
-                    : null}
-  	              <h3>Description</h3>
-  	              <p data-name="des" onDoubleClick={this.handleClick}>{description}</p>
-                  {showDesInput ?
-                    <input name="changedDes" value={this.state.changedDes} type="text" onChange={this.handleInputChange} />
-                    : null}
-  	            </div> 
-              <input type="submit" value="Submit"/>
-            </form>
-            <span className="remove-recipe" onClick={()=>this.props.onClickRemove(recipe)}>
-              <i className="fa fa-remove"></i> Delete
-            </span>            
+			<section className="recipe-sandbox">
+          		<i onClick={this.handleHide} className="fa fa-close"></i>
+	         	<h2 data-name="title" onDoubleClick={this.handleClick}>{title}</h2>
+	         	<form onSubmit={this.handleSubmit}>
+              	{showTitleInput ?
+              		<input name="changedTitle" type="text" defaultValue={title} onChange={this.handleInputChange(title)}/>
+              		: null}
+  	              <div className="sandbox-body">
+  	                <h3>Ingredients</h3>
+  	                <ul>
+  	                {ingredients !== undefined ? 
+  	              	  ingredients.map( item =>
+  	                  <li data-name="ing" onDoubleClick={this.handleClick}>{item}</li>) : null
+  	                  }
+  	                </ul>
+	                  {showIngInput ?
+	                    <input name="changedIng" value={this.state.changedIng} type="text" onChange={this.handleInputChange} />
+	                    : null}
+  	              	<h3>Notes</h3>
+  	                <p data-name="notes" onDoubleClick={this.handleClick}>{notes}</p>
+	                  {showNotesInput ?
+	                    <input name="changedNotes" value={this.state.changedNotes} type="text" onChange={this.handleInputChange} />
+	                    : null}
+	  	          </div> 
+	            </form>
+	            <span className="remove-recipe" onClick={()=>this.props.onClickRemove(recipe)}>
+	              <i className="fa fa-remove"></i> Delete
+	            </span>
+	            <span className="edit-recipe" onClick={()=>this.onClickEdit(recipe)}>
+	              <i className="fa fa-gear"></i> Edit
+	            </span>            
 	        </section>
           );
 		}
@@ -154,13 +133,13 @@ class AddRecipe extends Component {
         newRecipe: [],
         titleVal:'',
         ingredientsVal:'',
-        descriptionVal:''
+        notesVal:''
       }
 
     this.handleAddRecipe = this.handleAddRecipe.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleIngredientsChange = this.handleIngredientsChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
+    this.handleNotesChange = this.handleNotesChange.bind(this);
     this.handleHide = this.handleHide.bind(this);
   }
 
@@ -172,8 +151,8 @@ class AddRecipe extends Component {
     this.setState({ ingredientsVal: e.target.value });
   }
 
-  handleDescriptionChange(e){
-    this.setState({ descriptionVal: e.target.value });
+  handleNotesChange(e){
+    this.setState({ notesVal: e.target.value });
   }
 
   handleAddRecipe(e){
@@ -181,10 +160,10 @@ class AddRecipe extends Component {
     
     const title = this.state.titleVal;
     const ingredients = this.state.ingredientsVal.split(',');
-    const description = this.state. descriptionVal;
-    const addedRecipe = {title: title, ingredients: ingredients, description: description};
+    const notes = this.state.notesVal;
+    const addedRecipe = {title: title, ingredients: ingredients, notes: notes};
 
-    if(title === '' && ingredients[0] === '' && description === ''){
+    if(title === '' && ingredients[0] === '' && notes === ''){
     	return false;
 
     } else {
@@ -192,10 +171,10 @@ class AddRecipe extends Component {
     }
 
     this.setState({
-    	  newRecipe: [],
+    	newRecipe: [],
         titleVal:'',
         ingredientsVal:'',
-        descriptionVal:''
+        notesVal:''
     });
   }
 
@@ -215,8 +194,8 @@ class AddRecipe extends Component {
           <label>Ingredients
             <input value={this.state.ingredientsVal} type="text" placeholder="Enter ingredients separated by comma.." onChange={this.handleIngredientsChange} />
           </label>
-          <label>Description
-            <input value={this.state.descriptionVal} type="textarea" placeholder="Enter description, notes, etc." onChange={this.handleDescriptionChange} />
+          <label>Notes
+            <input value={this.state.notesVal} type="textarea" placeholder="Enter description, notes, etc." onChange={this.handleNotesChange} />
           </label>
             <input type="submit" value="Submit"/>
         </form>    
@@ -230,7 +209,7 @@ class App extends Component {
     super(props);
     this.state = {
       recipes: [],
-      recipe_count: 0,
+      recipes_count: 0,
       clickedRecipe: [],
       show_addnew: false,
       show_editor: false,
@@ -246,11 +225,11 @@ class App extends Component {
 
   componentDidMount(){
   	const storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
-  	const storedCount = Number(localStorage.getItem("recipe_count")) || 0;
+  	const storedCount = Number(localStorage.getItem("recipes_count")) || 0;
   	
   	this.setState({
   		recipes: storedRecipes,
-  		recipe_count: storedCount
+  		recipes_count: storedCount
   	});
   }
 
@@ -261,13 +240,13 @@ class App extends Component {
 
   handleAddNewRecipe(addedRecipe){
     const theRecipes = this.state.recipes.slice();
-    let count = this.state.recipe_count + 1;
+    let count = this.state.recipes_count + 1;
 
     addedRecipe.id = count;
     theRecipes.push(addedRecipe);
     this.setState({ 
     	recipes: theRecipes,
-    	recipe_count: count
+    	recipes_count: count
     });
     
     localStorage.setItem("recipes", JSON.stringify(theRecipes));
@@ -313,8 +292,8 @@ class App extends Component {
       newRecipe.ingredients = changedRecipe.ingredients;
     }
 
-    if(changedRecipe.description !== ''){
-      newRecipe.description = changedRecipe.description;
+    if(changedRecipe.notes !== ''){
+      newRecipe.notes = changedRecipe.notes;
     }
 
     theRecipes.splice(idx, 1, newRecipe);
@@ -351,7 +330,7 @@ class App extends Component {
             <Card recipe={recipe} onDoubleClick={this.handleOpenEdit} /> )
         	: null}
         {show_editor ?
-          <Editor recipe={clickedRecipe} onHandleEdit={this.handleSubmitEdit} onClickRemove={this.handleRemove} onHandleHideWindow={this.handleHideWindow} /> : null}
+          <Viewer recipe={clickedRecipe} onHandleEdit={this.handleSubmitEdit} onClickRemove={this.handleRemove} onHandleHideWindow={this.handleHideWindow} /> : null}
           </section>
         </div>
       </div>

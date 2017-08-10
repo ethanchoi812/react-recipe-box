@@ -2373,7 +2373,9 @@
     color: #333; }
 
 .recipe-card {
-  width: 33%;
+  width: 25%;
+  padding-top: 25px;
+  padding-bottom: 25px;
   background: #fffccc;
   -webkit-box-shadow: 1px 1px 15px 2px #777;
   -moz-box-shadow: 1px 1px 15px 2px #777;
@@ -2385,7 +2387,7 @@
 .recipe-sandbox {
   display: block;
   position: fixed;
-  background: #eaeaea;
+  background: #fff;
   padding: 20px 30px;
   width: 33%;
   top: 50%;
