@@ -7,10 +7,10 @@ $body-font: 18px 'Poppins', sans-serif;
 
 //colour
 $white: #fff;
+$black: #000;
 $off-white: #eaeaea;
 $light-gray: #ccc;
 $dark-gray: #636466;
-$dark-blue: #395870;
 $light-blue: #d1d9ff;
 $reddish: #ff7a7a;
 $yellow: #fffccc;
@@ -23,10 +23,20 @@ $green: #1ed8b5;
   		  box-shadow: $hor $vert $blur $spread $colour;
 }
 
+@mixin overlay {
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  left: 0%;
+  transform:translate(-50%, -50%);
+}
+
 @mixin recipe-viewer {
   display: block;
-  position: fixed;
+  position: absolute;
   background: $white;
+  color: $dark-gray;
   padding: 20px 30px;
   width: 33%;
   max-height: 100%;
@@ -38,6 +48,10 @@ $green: #1ed8b5;
   .fa-close {
     float: right;
     cursor: pointer;
+  }
+
+  h3 {
+    color: $black;
   }
 }
 

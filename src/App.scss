@@ -61,6 +61,10 @@
   margin-top: 25px;
 }
 
+.bg-overlay {
+  @include overlay;
+}
+
 .recipe-card {
   width: 100%;
   padding-top: 25px;
@@ -77,17 +81,27 @@
 .recipe-viewer{
   @include recipe-viewer;
 
+  h2 {
+    font: $header-font;
+    color: $dark-gray;
+  }
+
   ul {
-    width:50%;
+    width: 50%;
     margin: 0 auto;
   }
 }
 
 .recipe-adder {
   @include recipe-viewer;
+  label {
+    color: $black;
+  }
 }
 
 .recipe-form {
+  padding: 20px 30px;
+  
   input[type="text"], textarea {
     border: 1px solid $light-gray;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1);
@@ -113,6 +127,10 @@
       background: $white;
       color: $green;
     }
+  }
+
+  label {
+    color: $black;
   }
 }
 
