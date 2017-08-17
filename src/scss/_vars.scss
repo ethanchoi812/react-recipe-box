@@ -24,17 +24,18 @@ $green: #1ed8b5;
 }
 
 @mixin overlay {
+  background-color: rgb(0,0,0); /* Fallback color */
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   top: 0;
-  left: 0%;
-  transform:translate(-50%, -50%);
+  left: 0;
+  overflow: auto;
 }
 
 @mixin recipe-viewer {
   display: block;
-  position: absolute;
+  position: relative;
   background: $white;
   color: $dark-gray;
   padding: 20px 30px;

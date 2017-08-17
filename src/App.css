@@ -2339,8 +2339,14 @@
   min-height: 100vh; }
 
 .overlay {
+  background-color: black;
+  /* Fallback color */
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
+  overflow: auto;
   min-height: 100vh; }
 
 .App-header {
@@ -2376,15 +2382,23 @@
   grid-row-gap: 12px;
   justify-content: space-evenly;
   align-content: space-evenly;
-  margin-top: 25px; }
+  margin-top: 50px; }
 
-.bg-overlay {
+.recipe-modal {
+  background-color: black;
+  /* Fallback color */
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   top: 0;
-  left: 0%;
-  transform: translate(-50%, -50%); }
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  height: 100%;
+  /* Full height */ }
 
 .recipe-card {
   width: 100%;
@@ -2398,9 +2412,9 @@
     color: #ccc;
     cursor: pointer; }
 
-.recipe-viewer {
+.recipe-content {
   display: block;
-  position: absolute;
+  position: relative;
   background: #fff;
   color: #636466;
   padding: 20px 30px;
@@ -2410,21 +2424,21 @@
   left: 50%;
   transform: translate(-50%, -50%);
   overflow-y: scroll; }
-  .recipe-viewer .fa-close {
+  .recipe-content .fa-close {
     float: right;
     cursor: pointer; }
-  .recipe-viewer h3 {
+  .recipe-content h3 {
     color: #000; }
-  .recipe-viewer h2 {
+  .recipe-content h2 {
     font: 36px "Pacifico", cursive;
     color: #636466; }
-  .recipe-viewer ul {
+  .recipe-content ul {
     width: 50%;
     margin: 0 auto; }
 
 .recipe-adder {
   display: block;
-  position: absolute;
+  position: relative;
   background: #fff;
   color: #636466;
   padding: 20px 30px;
