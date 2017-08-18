@@ -8,6 +8,7 @@
   -o-background-size: cover;
   background-size: cover;
   min-height: 100vh;
+  font: $body-font;
 }
 
 .overlay {
@@ -29,7 +30,6 @@
 .App-body {
   margin-top: 50px;
   padding: 0 25px;
-  font: $body-font;
 }
 
 .add-btn {
@@ -145,4 +145,10 @@
   @include recipe-viewer-btn;
   color: $green;
   margin-right: 8px;
+}
+
+.repo-link {
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 10px;
 }

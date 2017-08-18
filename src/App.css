@@ -2336,7 +2336,8 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  min-height: 100vh; }
+  min-height: 100vh;
+  font: 18px "Poppins", sans-serif; }
 
 .overlay {
   background-color: black;
@@ -2358,8 +2359,7 @@
 
 .App-body {
   margin-top: 50px;
-  padding: 0 25px;
-  font: 18px "Poppins", sans-serif; }
+  padding: 0 25px; }
 
 .add-btn {
   background: rgba(255, 255, 255, 0.8);
@@ -2496,3 +2496,8 @@
   margin-top: 12px;
   color: #1ed8b5;
   margin-right: 8px; }
+
+.repo-link {
+  position: fixed;
+  bottom: 0;
+  margin-bottom: 10px; }

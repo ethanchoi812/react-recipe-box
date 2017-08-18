@@ -151,6 +151,7 @@ class App extends Component {
           	: null}
             </section>
           </section>
+          <small className="repo-link">See <a href="https://github.com/ethanchoi812/react-recipe-box">Github repo</a></small>
         </div>
       </div>
     );
