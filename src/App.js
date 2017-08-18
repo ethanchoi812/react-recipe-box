@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import 'normalize.css';
 import './App.css';
-import AddRecipe from './AddRecipe.js';
-import Card from './Card.js';
-import Viewer from './Viewer.js';
+import AddRecipe from './components/AddRecipe.js';
+import Card from './components/Card.js';
+import Viewer from './components/Viewer.js';
 
 class App extends Component {
   constructor(props){
@@ -14,7 +14,7 @@ class App extends Component {
       	ingredients: ["Acme1", "Acme2", "Acme3"],
       	notes: "This is your first recipe! Edit or delete."
       }],
-      recipes_count: 1,
+      recipes_count: 0,
       clickedRecipe: [],
       show_addnew: false,
       show_editor: false,

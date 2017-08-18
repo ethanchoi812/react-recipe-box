@@ -2343,7 +2343,6 @@
   /* Fallback color */
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
-  min-height: 100vh;
   top: 0;
   left: 0;
   overflow: auto;
@@ -2389,7 +2388,6 @@
   /* Fallback color */
   background: rgba(0, 0, 0, 0.5);
   width: 100%;
-  min-height: 100vh;
   top: 0;
   left: 0;
   overflow: auto;
