@@ -2,7 +2,7 @@
   "name": "recipe-box",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://myusername.github.io/my-app",
+  "homepage": "https://ethanchoi812.github.io/react-recipe-box",
   "dependencies": {
     "gh-pages": "^1.0.0",
     "node-sass-chokidar": "0.0.3",
